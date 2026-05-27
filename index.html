@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Light Within – Intuitive Kartenlegung</title>
+
+  <style>
+    :root {
+      --bg: #fbf7f5;
+      --cream: #fffdfb;
+      --lavender: #b08ab7;
+      --lavender-dark: #7e5f86;
+      --text: #2f2a2c;
+      --muted: #6f6568;
+      --line: #e9dde8;
+      --soft: #f3e8f2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, serif;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 7%;
+      background: rgba(255, 253, 251, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(176, 138, 183, 0.18);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .logo-symbol {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--lavender);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--lavender-dark);
+      font-size: 22px;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      margin-left: 26px;
+      font-size: 13px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      min-height: 760px;
+      padding: 150px 7% 90px;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+      gap: 50px;
+      background:
+        linear-gradient(90deg, rgba(251,247,245,0.96) 0%, rgba(251,247,245,0.75) 45%, rgba(251,247,245,0.2) 100%),
+        url('https://images.unsplash.com/photo-1477511801984-4ad318ed9846?auto=format&fit=crop&w=1800&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 1.08;
+      margin-bottom: 26px;
+    }
+
+    .hero p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .button, button {
+      display: inline-block;
+      background: var(--lavender-dark);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .button:hover, button:hover {
+      background: #6f5275;
+      transform: translateY(-2px);
+    }
+
+    .button.light {
+      background: white;
+      color: var(--lavender-dark);
+      border: 1px solid var(--line);
+    }
+
+    section {
+      max-width: 1180px;
+      margin: auto;
+      padding: 95px 25px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 18px;
+      font-size: clamp(34px, 4vw, 52px);
+    }
+
+    .intro {
+      max-width: 760px;
+      margin: 0 auto 42px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .feature-strip {
+      max-width: 1050px;
+      margin: -70px auto 0;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 45px rgba(90, 70, 90, 0.08);
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      overflow: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    .feature {
+      padding: 32px 25px;
+      text-align: center;
+      border-right: 1px solid var(--line);
+    }
+
+    .feature:last-child { border-right: none; }
+    .feature span { font-size: 30px; color: var(--lavender-dark); }
+    .feature h3 { font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 12px; }
+    .feature p { font-size: 14px; color: var(--muted); }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(90, 70, 90, 0.07);
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content { padding: 32px 24px; }
+    .card h3 { font-size: 32px; margin-bottom: 8px; }
+    .price { color: var(--lavender-dark); font-size: 28px; font-weight: 700; margin: 15px 0; }
+
+    .about-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-radius: 18px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 35px rgba(90, 70, 90, 0.06);
+    }
+
+    .about-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 330px;
+    }
+
+    .about-text {
+      padding: 45px;
+    }
+
+    .about-text h3 { font-size: 28px; margin-bottom: 20px; }
+    .about-text p { color: var(--muted); }
+
+    .booking-box, .giveaway {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 42px;
+      box-shadow: 0 16px 45px rgba(90, 70, 90, 0.07);
+    }
+
+    textarea, select, input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 15px;
+      margin: 8px 0 20px;
+      background: #fffdfb;
+    }
+
+    label { font-weight: 700; color: var(--text); }
+
+    .notice {
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      margin: 20px 0;
+      color: var(--text);
+    }
+
+    .tarot-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .tarot-card {
+      min-height: 120px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, #fffdfb, #f3e8f2);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--lavender-dark);
+      font-weight: 700;
+      transition: 0.2s;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .tarot-card:hover { transform: translateY(-5px); }
+    .tarot-card.selected { background: var(--lavender-dark); color: white; }
+
+    .summary {
+      background: #fbf7fb;
+      border: 1px solid var(--line);
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 700;
+      margin-top: 18px;
+    }
+
+    .giveaway {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      background: linear-gradient(135deg, #fffdfb, #f3e8f2);
+    }
+
+    .answers label {
+      display: block;
+      background: white;
+      border: 1px solid var(--line);
+      padding: 13px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .reviews {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .review {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    .contact {
+      text-align: center;
+      background: linear-gradient(135deg, #b08ab7, #d9bedc);
+      color: white;
+      border-radius: 24px;
+      padding: 65px 25px;
+    }
+
+    .contact h2 { color: white; }
+
+    footer {
+      text-align: center;
+      padding: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 850px) {
+      nav { position: static; flex-direction: column; gap: 14px; }
+      nav a { display: inline-block; margin: 8px; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 80px; }
+      .feature-strip, .grid-3, .about-box, .giveaway, .reviews { grid-template-columns: 1fr; }
+      .feature { border-right: none; border-bottom: 1px solid var(--line); }
+      .tarot-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="brand">
+      <div class="logo-symbol">☾</div>
+      <div>
+        LIGHT WITHIN<br>
+        <small style="font-weight:400; letter-spacing:0.5px; text-transform:none;">Intuition is your inner compass</small>
+      </div>
+    </div>
+    <div>
+      <a href="#home">Home</a>
+      <a href="#ueber">Über mich</a>
+      <a href="#angebote">Angebote</a>
+      <a href="#kartenlegung">Kartenlegung</a>
+      <a href="#gewinnspiel">Gewinnspiel</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div>
+      <h1>Für mehr Klarheit.<br>Für dich.<br>Für dein Leben.</h1>
+      <p>Ich begleite dich auf deinem Weg zu dir selbst – mit Intuition, Herz und ehrlichen Antworten.</p>
+      <a href="#kartenlegung" class="button">Jetzt Karten ziehen</a>
+      <a href="#angebote" class="button light">Angebote ansehen</a>
+    </div>
+  </header>
+
+  <div class="feature-strip">
+    <div class="feature"><span>☾</span><h3>Kartenlegung</h3><p>Antworten auf deine wichtigsten Fragen.</p></div>
+    <div class="feature"><span>✧</span><h3>Intuition</h3><p>Impulse für Klarheit und innere Stärke.</p></div>
+    <div class="feature"><span>♡</span><h3>Mit Herz</h3><p>Liebevolle Begleitung ohne Druck.</p></div>
+    <div class="feature"><span>☼</span><h3>Vertraulich</h3><p>Deine Themen bleiben geschützt.</p></div>
+  </div>
+
+  <section id="ueber">
+    <h2 class="section-title">Willkommen bei Light Within</h2>
+    <p class="intro">Schön, dass du hier bist. Deine Intuition ist dein innerer Kompass. Mit meiner Kartenlegung unterstütze ich dich dabei, deine Situation klarer zu sehen und deinem Herzen wieder mehr zu vertrauen.</p>
+
+    <div class="about-box">
+      <img src="https://images.unsplash.com/photo-1487035242901-d419a42d17af?auto=format&fit=crop&w=900&q=80" alt="Kerze und Lavendel">
+      <div class="about-text">
+        <h3>Meine Begleitung für dich</h3>
+        <p><strong>Kartenlegung:</strong> Ein tiefer Blick auf deine Situation, deine Möglichkeiten und deinen nächsten Schritt.</p>
+        <p><strong>Intuitive Impulse:</strong> Sanfte Hinweise für Liebe, Beruf, Entscheidungen und persönliche Themen.</p>
+        <p><strong>Spirituelle Klarheit:</strong> Ruhige, ehrliche und herzvolle Begleitung.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Ruhige Natur">
+    </div>
+  </section>
+
+  <section id="angebote">
+    <h2 class="section-title">Meine Angebote</h2>
+    <p class="intro">Wähle die Kartenlegung, die zu deiner aktuellen Frage passt.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1508185159346-bb1c5e93ebb9?auto=format&fit=crop&w=900&q=80" alt="Kurzlegung">
+        <div class="card-content">
+          <h3>Kurzlegung</h3>
+          <p>Für eine klare Frage und einen schnellen Impuls.</p>
+          <div class="price">15 €</div>
+          <a href="#kartenlegung" class="button">Zur Legung</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=900&q=80" alt="Große Kartenlegung">
+        <div class="card-content">
+          <h3>Große Kartenlegung</h3>
+          <p>Für tiefere Einblicke und klare Botschaften.</p>
+          <div class="price">35 €</div>
+          <a href="#kartenlegung" class="button">Zur Legung</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1477511801984-4ad318ed9846?auto=format&fit=crop&w=900&q=80" alt="Monatslegung">
+        <div class="card-content">
+          <h3>Monatslegung</h3>
+          <p>Dein Wegweiser für den kommenden Monat.</p>
+          <div class="price">45 €</div>
+          <a href="#kartenlegung" class="button">Zur Legung</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kartenlegung">
+    <h2 class="section-title">Deine persönliche Kartenlegung</h2>
+    <p class="intro">Schreibe deine Frage auf, konzentriere dich eine Minute darauf und ziehe dann intuitiv 3 verdeckte Karten. Die Kartennamen werden dir nicht angezeigt.</p>
+
+    <div class="booking-box">
+      <label for="frage">1. Schreibe deine Frage auf</label>
+      <textarea id="frage" rows="5" placeholder="Zum Beispiel: Was darf ich über meine Liebe, Zukunft oder aktuelle Situation wissen?"></textarea>
+
+      <div class="notice">
+        <strong>Wichtiger Hinweis</strong><br>
+        Bitte konzentriere dich vor dem Ziehen der Karten mindestens 1 Minute lang intensiv auf deine Frage. Atme ruhig ein und aus und lasse deine Intuition entscheiden.
+      </div>
+
+      <label>2. Ziehe 3 verdeckte Karten</label>
+      <div class="tarot-grid">
+        <div class="tarot-card" onclick="chooseCard(this, 'Sonne')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Herz')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Schlüssel')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Stern')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Blume')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Weg')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Brief')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Ring')">Karte ziehen</div>
+        <div class="tarot-card" onclick="chooseCard(this, 'Baum')">Karte ziehen</div>
+      </div>
+
+      <label for="paket">3. Wähle dein Paket</label>
+      <select id="paket" onchange="updateSummary()">
+        <option value="">Bitte auswählen</option>
+        <option value="2 Fragen|15">2 Fragen – 15 €</option>
+        <option value="3 Fragen|22">3 Fragen – 22 €</option>
+        <option value="6 Fragen|39">6 Fragen – 39 €</option>
+      </select>
+
+      <div class="summary" id="summary">Noch keine Auswahl getroffen.</div>
+
+      <div style="text-align:center; margin-top:25px;">
+        <button onclick="payWithPaypal()">Jetzt mit PayPal bezahlen</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="gewinnspiel">
+    <h2 class="section-title">Gewinnspiel</h2>
+    <p class="intro">Gewinne eine Chat-Legung für 30 Minuten.</p>
+
+    <div class="giveaway">
+      <div>
+        <h3 style="font-size:38px;">Mit Frage teilnehmen</h3>
+        <p>Beantworte die Gewinnspiel-Frage. Eine Antwort ist richtig.</p>
+        <p><strong>Welches Symbol steht oft für neue Klarheit?</strong></p>
+        <div class="answers">
+          <label><input type="radio" name="answer"> A – Sonne</label>
+          <label><input type="radio" name="answer"> B – Wolke</label>
+          <label><input type="radio" name="answer"> C – Berg</label>
+        </div>
+      </div>
+      <form onsubmit="submitGiveaway(event)">
+        <label>Dein Name</label>
+        <input type="text" required placeholder="Dein Name">
+        <label>Deine E-Mail-Adresse</label>
+        <input type="email" required placeholder="deine@email.de">
+        <button type="submit">Teilnahme absenden</button>
+        <p style="font-size:13px; color:var(--muted);">Der/die Gewinner:in wird per E-Mail benachrichtigt.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="bewertungen">
+    <h2 class="section-title">Kundenstimmen</h2>
+    <div class="reviews">
+      <div class="review">„Sehr liebevoll und treffend. Ich habe mich sofort verstanden gefühlt.“<br><br><strong>– Sarah</strong></div>
+      <div class="review">„Die Beratung hat mir Klarheit in einer schwierigen Situation gegeben.“<br><br><strong>– Melanie</strong></div>
+      <div class="review">„Ruhig, ehrlich und voller Herz. Ich komme gerne wieder.“<br><br><strong>– Laura</strong></div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="contact">
+      <h2 class="section-title">Kontakt</h2>
+      <p>Du möchtest eine Kartenlegung buchen oder hast Fragen?</p>
+      <p><strong>E-Mail:</strong> deine-email@example.com</p>
+      <p><strong>WhatsApp:</strong> +49 000 000000</p>
+      <a href="mailto:deine-email@example.com" class="button light">E-Mail schreiben</a>
+      <a href="https://wa.me/490000000000" class="button light">WhatsApp öffnen</a>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 LIGHT WITHIN · Intuition is your inner compass · Impressum · Datenschutz
+  </footer>
+
+  <script>
+    let selectedCards = [];
+
+    function chooseCard(element, cardName) {
+      if (element.classList.contains('selected')) {
+        element.classList.remove('selected');
+        element.innerText = 'Karte ziehen';
+        selectedCards = selectedCards.filter(card => card !== cardName);
+      } else {
+        if (selectedCards.length >= 3) {
+          alert('Du kannst nur 3 Karten ziehen.');
+          return;
+        }
+        element.classList.add('selected');
+        element.innerText = 'Karte ausgewählt';
+        selectedCards.push(cardName);
+      }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const paket = document.getElementById('paket').value;
+      const summary = document.getElementById('summary');
+      let paketText = 'Kein Paket ausgewählt';
+      let preis = '-';
+      if (paket) {
+        const parts = paket.split('|');
+        paketText = parts[0];
+        preis = parts[1] + ' €';
+      }
+      summary.innerHTML = 'Ausgewählte Karten: ' + selectedCards.length + ' von 3<br>Paket: ' + paketText + '<br>Preis: ' + preis;
+    }
+
+    document.getElementById('frage').addEventListener('input', updateSummary);
+
+    function payWithPaypal() {
+      const frage = document.getElementById('frage').value.trim();
+      const paket = document.getElementById('paket').value;
+      if (!frage) { alert('Bitte schreibe zuerst deine Frage auf.'); return; }
+      if (selectedCards.length !== 3) { alert('Bitte ziehe genau 3 Karten.'); return; }
+      if (!paket) { alert('Bitte wähle ein Paket aus.'); return; }
+      const parts = paket.split('|');
+      const paypalEmail = 'DEINE-PAYPAL-EMAIL@example.com';
+      const paypalLink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=' + encodeURIComponent(paypalEmail) + '&item_name=' + encodeURIComponent('Light Within Kartenlegung - ' + parts[0]) + '&amount=' + encodeURIComponent(parts[1]) + '&currency_code=EUR';
+      window.location.href = paypalLink;
+    }
+
+    function submitGiveaway(event) {
+      event.preventDefault();
+      alert('Danke für deine Teilnahme!');
+    }
+  </script>
+</body>
+</html>

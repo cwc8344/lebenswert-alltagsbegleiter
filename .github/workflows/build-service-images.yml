@@ -2,7 +2,7 @@ name: Build service images
 on:
   push:
     branches: [homepage-neu]
-    paths: ['image-trigger-hq.txt']
+    paths: ['image-trigger-new3.txt']
 permissions:
   contents: write
 jobs:
@@ -11,17 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {ref: homepage-neu}
-      - name: Install full resolution service images
+      - name: Install new three service images
         run: |
           mkdir -p assets
           python - <<'PY'
           import urllib.request
-          urls=["https://uc03095f7d0acfcd3623b0bbc42e.dl.dropboxusercontent.com/cd/0/get/DJVPZe6fCv32aOxYhGdovnDRwknlQFc_6I5JIe55jnG6J3uGnwvn0QuUR7D2x83O_X46oHUD0S_PqeFUidUDULlUFKzBje2ZhreBj5EumzeMrdJ6xcuEnNtpwuo4NIRSR56kULgGre1epzjCtoTA8GUGoNYp35jJ78uDFRSQliDA8w/file?c_luid=b93e3f85","https://uc7d671dc75fa803f69c83688509.dl.dropboxusercontent.com/cd/0/get/DJWOfjPl8w7hU3sxbL03yUTxZxsyaKPuqAut0l1ZwKt59u1nKRIWtwjLulxLaMpraUm_uj6GakPt2sJi18Dd3wPwsA3u91I3KtV6pMBfw4LuZCqGHv2vvqmPKbAJIY8CBH-n-O5EoVjeKxVqn2RecX0Gpsk6upJwivmdjuriVy-n3w/file?c_luid=b93e3f85","https://uc3d1736d5fa46d1bb794b8de0a3.dl.dropboxusercontent.com/cd/0/get/DJUyKFe2U4hTJHmdReh943vay0DnTSgR-OLefZx8DeEOwuAlcWDnpUayYNAMxs0ygcUTDwDk04Hvwbqdnx03tqecNvwnkm3ZJmpUnCMD0yCQCkhuTJfRqOHZ3zvUds-nvUE0Z8ZLWDDQ1JNKBCESF9ppPFMvkBUKYPtv0Zx5trnVdA/file?c_luid=b93e3f85"]
+          urls=["https://uc6d0e4df2bef2210ee25fa5375d.dl.dropboxusercontent.com/cd/0/get/DJWF-SklKZCqYWRpaYYlrXDq9OnnX53mak-4p_Np5Ja3E7ym3H8wD2ZZ9roX44V3DggY67SjCnrTuv-iEgbMpXGyP-_ZDx_CeDdZigkHq6FNgO-u8zHJGQxeN3aaRpYx_cCm7yCHE_td7mQy6PJKTsuydgdkcUzx8_7lF36a3TG5WQ/file?c_luid=b93e3f85","https://uc96d4b2dfaa29276d1625270015.dl.dropboxusercontent.com/cd/0/get/DJUg8-WrZ9S3DnGfgXEfrBSZw4OVlQCICu2X3u9o3jrFn-ld7bj4n58CYnn9tpknipmyJX4WPnp2zzoM9lJD6ffvptSX-5dK22eEbs9lpyUmusjd7sMS4yBSx-VvOCKijp65XO1nCZIPpruNd8yvDkdWZ5OU6KDcp2-XdpgnYOTr3Q/file?c_luid=b93e3f85","https://uc0b6aedee7858a44cc77fc156c6.dl.dropboxusercontent.com/cd/0/get/DJVfM54wmnsuqzstiZ1Djwby33QwjkaZTEe2-qvrC9P0PxtDHvJZJJ_G19iuICoR1ZCCSbkqV1Q0Cz4RkCgyqI-XhWYFQe14eEYCU85M4c-o9V-HZ48cbXxMTd-IXGpPTgYfcZKWbZQvFU5IGJTnVoL4PIN6Ge3VcIHSnn3odry0Sg/file?c_luid=b93e3f85"]
           for i,u in enumerate(urls,1):
-              urllib.request.urlretrieve(u, f"assets/leistung-{i}.jpg")
+              urllib.request.urlretrieve(u, f"assets/leistung-{i}.png")
           PY
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add assets/leistung-1.jpg assets/leistung-2.jpg assets/leistung-3.jpg
-          git commit -m "Leistungsbilder in voller Auflösung einsetzen" || exit 0
+          git add assets/leistung-1.png assets/leistung-2.png assets/leistung-3.png
+          git commit -m "Drei neue Leistungsbilder einsetzen" || exit 0
           git push

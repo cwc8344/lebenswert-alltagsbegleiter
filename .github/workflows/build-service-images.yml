@@ -2,25 +2,26 @@ name: Build service images
 on:
   push:
     branches: [homepage-neu]
-    paths:
-      - 'image-data/**'
+    paths: ['image-trigger.txt']
 permissions:
   contents: write
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: homepage-neu
-      - run: |
+        with: {ref: homepage-neu}
+      - name: Install exact service images
+        run: |
           mkdir -p assets
-          for n in 1 2 3; do
-            cat image-data/l${n}-*.txt | tr -d '\n' | base64 -d > assets/leistung-${n}.webp
-          done
+          python - <<'PY'
+          import urllib.request
+          urls=["https://uc5c5bf8b6cf5af55e0e664daf67.dl.dropboxusercontent.com/cd/0/get/DJW-43yGuFEVn34rMEgkARYZMmbE1j63OTf9ovmimMJGRI0P7VJf96Zbt3avp12racCG7cHRzMzZ5VP6sVRyPOqVHkWVQKJtjP519FfYITTFVoBXLQX6V7Nn0iCZkvKcvUeXX_a3WZ7EEtV1JA6qvuso65yOh4nH5TJQaq7g8bPZeQ/file?c_luid=b93e3f85","https://ucd73d904600cc359d5ce22370e3.dl.dropboxusercontent.com/cd/0/get/DJX7DomkfXoR_bRsDQkgxLQq_2G2fCH5xgeA6A3zWYLq92ngQd3F2JUgPn8ZKYfeRLW73TWG6QeNfHia04zwD8wjJv5xzYYomfznsNzsUXHLkmxLmsId1AB9Tf4lF7aaVxsXUjNg_K2W6ePG4WV6z6d0QXU2z3hEjKw1mIzNRqCeVQ/file?c_luid=b93e3f85","https://uc9c6ef79d4b340faac710829a6c.dl.dropboxusercontent.com/cd/0/get/DJV8wg9lKabQcmXB8Y2deE_5UUYtt2flW7ijHRhjs61EGomjfkbH5quuBDqJgehNFxNTz3Ms5hDSWZtQcBvLCr9jBDSjqwJlabNdszr_lM7o7YwNKpxIbdBk_rAvym4MXXRUPgi5JkvIMfMqXhBMfqWBO_xRbUmuny2oUOoXTJ81Uw/file?c_luid=b93e3f85"]
+          for i,u in enumerate(urls,1):
+              urllib.request.urlretrieve(u, f"assets/leistung-{i}.jpg")
+          PY
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add assets/leistung-1.webp assets/leistung-2.webp assets/leistung-3.webp
+          git add assets/leistung-1.jpg assets/leistung-2.jpg assets/leistung-3.jpg
           git commit -m "Drei exakte Leistungsbilder hinzufügen" || exit 0
           git push

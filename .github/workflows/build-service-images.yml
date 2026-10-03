@@ -1,0 +1,26 @@
+name: Build service images
+on:
+  push:
+    branches: [homepage-neu]
+    paths:
+      - 'image-data/**'
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: homepage-neu
+      - run: |
+          mkdir -p assets
+          for n in 1 2 3; do
+            cat image-data/l${n}-*.txt | tr -d '\n' | base64 -d > assets/leistung-${n}.webp
+          done
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add assets/leistung-1.webp assets/leistung-2.webp assets/leistung-3.webp
+          git commit -m "Drei exakte Leistungsbilder hinzufügen" || exit 0
+          git push
